@@ -1,0 +1,9 @@
+.container-footer {
+    left: 0px;
+    bottom: 0px;
+    margin-top: auto;
+    /*
+    position: absolute; con absolute pierde sus medidas
+    width: 100%;
+    */
+}
