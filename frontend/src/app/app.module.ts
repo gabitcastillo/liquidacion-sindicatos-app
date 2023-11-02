@@ -13,8 +13,7 @@ import { ListLiquidacionComponent } from './components/list-liquidacion/list-liq
 import { FooterComponent } from './components/footer/footer.component';
 // Servicios
 import { ConvenioService } from './services/convenio.service';
-import { DataTableComponent } from './components/data-table/data-table.component';
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+// import { MatTableExporterModule } from 'mat-table-exporter';
 
 @NgModule({
   declarations: [
@@ -22,7 +21,6 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
     NavbarComponent,
     ListLiquidacionComponent,
     FooterComponent,
-    DataTableComponent,
   ],
   imports: [
     BrowserModule,
@@ -31,7 +29,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
     HttpClientModule,
     BrowserAnimationsModule,
     MaterialModule,
-    NgxDatatableModule
+    // MatTableExporterModule
   ],
   providers: [ConvenioService],
   bootstrap: [AppComponent]
