@@ -1,10 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Nomina } from 'src/app/interfaces/Nomina';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConvenioService } from 'src/app/services/convenio.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-
+import { utils, writeFile } from 'xlsx';
+import { NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-list-liquidacion',
@@ -18,102 +20,174 @@ export class ListLiquidacionComponent implements OnInit {
   id_convenio: string = "1";
   nombre_convenio: string = '';
   nombre_empresa: string = '';
+  fecha_egreso: string = '';
 
   nomina_general: Nomina[];
   nomina_actual: Nomina[];
   nomina_filtrada: Nomina[];
 
   lista_convenio: any;
-  lista_empresa: any;
+  lista_egreso: any;
 
-  exporter : any;
-
-  displayedColumns: string[] = ['legajo', 'cuil', 'apellidoNombre', 'frp', 'documento', 'apellido', 'nombre', 'sexo',
-    'antiguedad', 'ingreso', 'egreso', 'fnacimiento', 'fecbajacat', 'convenio', 'categoria', 'unidad', 'uopropia', 'calificacion', 'osoccodigo',
-    'osocnombre', 'zona', 'laboralbarrio', 'laboralcp', 'laboralcalle', 'laboralnro', 'laboralpiso', 'laboraldepto', 'laborallocalidad', 'laboralprovincia',
-    'centrodecosto', 'lugardepago', 'sectorinterno', 'jornada', 'recibos', 'legajos', 'brutoimp', 'retenciones', 'salariofamiliar', 'exentoimp', 'netoimp',
-    '592', '870', '871', '872', '873', '874', '875', '880', '900', '901', '903', '911', '914', '916', '932', '933', '994', '995', '1200', '1201', '1202', '1203', '1204', '1205',
-    '1206', '1212', '1213', '1208', 'totalImp', 'basico', 'total'
+  displayedColumns: string[] = [
+    'Legajo',
+    'Apellido y Nombre',
+    'CUIL',
+    'F.R.P.',
+    'NroDoc',
+    'Apellido',
+    'Nombre',
+    'Sexo',
+    'FAntigüedad',
+    'Ingreso',
+    'Egreso',
+    'FNacimiento',
+    'FecBajaCAT',
+    'Convenio',
+    'Categoría',
+    'Cliente',
+    'Unidad',
+    'U.O.Propia',
+    'Calificación Profesional',
+    'O Soc Codigo',
+    'O Soc Nombre',
+    'Zona',
+    'Laboral Barrio',
+    'Laboral CP',
+    'Laboral Calle',
+    'Laboral Nro',
+    'Laboral Piso',
+    'Laboral Dpto',
+    'Laboral Localidad',
+    'Laboral Provincia',
+    'CentroDeCosto',
+    'LugarDePago',
+    'SectorInterno',
+    'Jornada',
+    'Recibos',
+    'Legajos',
+    'Bruto Imp',
+    'Retenciones Imp',
+    'Salario Familiar Imp',
+    'Exento Imp',
+    'Neto Imp',
+    '592 - (con aportes) Imp',
+    '870 - Cuota Sindical (C) Imp',
+    '871 - Aporte Solidario (D) Imp',
+    '872 - Federación Imp',
+    '873 - Ajte.Dto.Obra Social Imp',
+    '874 - Solo Sind. (D) Imp',
+    '875 - Solo Sind. (T) Imp',
+    '880 - Ajuste Sindicato Imp',
+    '900 - Seguro de Vida Imp',
+    '901 - Seguro CCT Imp',
+    '903 - Seguro (C) Imp',
+    '911 - Desc. Ayuda Econ Mutual (No Gananc) Imp',
+    '914 - Concepto a Configurar Imp',
+    '916 - Mutual(C) Imp',
+    '932 - Desc.Tarjeta Magnetica Imp',
+    '933 - Retención Directo - Reint Usuaria Imp',
+    '994 - Descuento Anticipo Imp',
+    '995 - Descuento Anticipo (M) Imp',
+    '1200 - Contribución Patronal 1(C7) Imp',
+    '1201 - Contribución Patronal 2 (C8) Imp',
+    '1202 - Contribución Patronal 3 (C9) Imp',
+    '1203 - Ajte. Contribuciones Imp',
+    '1204 - Contrib OS Adicional para 931 Imp',
+    '1205 - Contribucion Patronal (T)(C7) Imp',
+    '1206 - Contribucion Patronal UOCRA(C8) Imp',
+    '1207 - Ajte. Contribucion OS Tiempo Parcial Imp',
+    '1212 - Contribución Patronal 4(C107) Imp',
+    '1213 - Contribución Patronal 5 (C108) Imp',
+    '1208 - Contribucion OS S/ NR Imp',
+    'TotalImp',
+    'Básico',
+    'TOTAL'
   ];
+
   dataSource = new MatTableDataSource<Nomina>();
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
+  @ViewChild(MatSort, { static: false }) sort!: MatSort;
 
   columns = [
-    { titulo: 'Legajo', name: 'legajo' },
-    { titulo: 'Apellido y Nombre', name: 'apellidoNombre' },
-    { titulo: 'CUIL', name: 'cuil' },
-    { titulo: 'F.R.P', name: 'frp' },
-    { titulo: 'Nro. Doc', name: 'documento' },
-    { titulo: 'Apellido', name: 'apellido' },
-    { titulo: 'Nombre', name: 'nombre' },
-    { titulo: 'Sexo', name: 'sexo' },
-    { titulo: 'F. Antigüedad', name: 'antiguedad' },
-    { titulo: 'Ingreso', name: 'ingreso' },
-    { titulo: 'Egreso', name: 'egreso' },
-    { titulo: 'F. Nacimiento', name: 'fnacimiento' },
-    { titulo: 'FecBajaCAT', name: 'fecbajacat' },
-    { titulo: 'Convenio', name: 'convenio' },
-    { titulo: 'Categoría', name: 'categoria' },
-    { titulo: 'Cliente', name: 'cliente' },
-    { titulo: 'Unidad', name: 'unidad' },
-    { titulo: 'U.O.Propia', name: 'uopropia' },
-    { titulo: 'Calificación', name: 'calificacion' },
-    { titulo: 'O Soc Codigo', name: 'osoccodigo' },
-    { titulo: 'O Soc Nombre', name: 'osocnombre' },
-    { titulo: 'Zona', name: 'zona' },
-    { titulo: 'Laboral Barrio', name: 'laboralbarrio' },
-    { titulo: 'Laboral CP', name: 'laboralcp' },
-    { titulo: 'Laboral Calle', name: 'laboralcalle' },
-    { titulo: 'Laboral Nro', name: 'laboralnro' },
-    { titulo: 'Laboral Piso', name: 'laboralpiso' },
-    { titulo: 'Laboral Dpto', name: 'laboraldepto' },
-    { titulo: 'Laboral Localidad', name: 'laborallocalidad' },
-    { titulo: 'Laboral Provincia', name: 'laboralprovincia' },
-    { titulo: 'Centro de Costo', name: 'centrodecosto' },
-    { titulo: 'Lugar de Pago', name: 'lugardepago' },
-    { titulo: 'Sector Interno', name: 'sectorinterno' },
-    { titulo: 'Jornada', name: 'jornada' },
-    { titulo: 'Recibos', name: 'recibos' },
-    { titulo: 'Legajos', name: 'legajos' },
-    { titulo: 'Bruto Imp', name: 'brutoimp' },
-    { titulo: 'Retenciones', name: 'retenciones' },
-    { titulo: 'Salario Familiar', name: 'salariofamiliar' },
-    { titulo: 'Exento Imp', name: 'exentoimp' },
-    { titulo: 'Neto Imp', name: 'netoimp' },
-    { titulo: '592', name: '592' },
-    { titulo: '870', name: '870' },
-    { titulo: '871', name: '871' },
-    { titulo: '872', name: '872' },
-    { titulo: '873', name: '873' },
-    { titulo: '874', name: '874' },
-    { titulo: '875', name: '875' },
-    { titulo: '880', name: '880' },
-    { titulo: '900', name: '900' },
-    { titulo: '901', name: '901' },
-    { titulo: '903', name: '903' },
-    { titulo: '911', name: '911' },
-    { titulo: '914', name: '914' },
-    { titulo: '916', name: '916' },
-    { titulo: '932', name: '932' },
-    { titulo: '933', name: '933' },
-    { titulo: '994', name: '994' },
-    { titulo: '995', name: '995' },
-    { titulo: '1200', name: '1200' },
-    { titulo: '1201', name: '1201' },
-    { titulo: '1202', name: '1202' },
-    { titulo: '1203', name: '1203' },
-    { titulo: '1204', name: '1204' },
-    { titulo: '1205', name: '1205' },
-    { titulo: '1206', name: '1206' },
-    { titulo: '1207', name: '1207' },
-    { titulo: '1212', name: '1212' },
-    { titulo: '1213', name: '1213' },
-    { titulo: '1208', name: '1208' },
-    { titulo: 'Total Imp', name: 'totalImp' },
-    { titulo: 'Básico Importe', name: 'basico' },
-    { titulo: 'TOTAL Importe', name: 'total' },
+    // {titulo: 'ID', name:'ID'},
+    { titulo: 'Legajo', name: 'Legajo' },
+    { titulo: 'Apellido y Nombre', name: 'Apellido y Nombre' },
+    { titulo: 'CUIL', name: 'CUIL' },
+    { titulo: 'F.R.P.', name: 'F.R.P.' },
+    { titulo: 'Nro. Doc', name: 'NroDoc' },
+    { titulo: 'Apellido', name: 'Apellido' },
+    { titulo: 'Nombre', name: 'Nombre' },
+    { titulo: 'Sexo', name: 'Sexo' },
+    { titulo: 'F. Antigüedad', name: 'FAntigüedad' },
+    { titulo: 'Ingreso', name: 'Ingreso' },
+    { titulo: 'Egreso', name: 'Egreso' },
+    { titulo: 'F. Nacimiento', name: 'FNacimiento' },
+    { titulo: 'FecBajaCAT', name: 'FecBajaCAT' },
+    { titulo: 'Convenio', name: 'Convenio' },
+    { titulo: 'Categoría', name: 'Categoría' },
+    { titulo: 'Cliente', name: 'Cliente', toolTip: 'Clienteee' },
+    { titulo: 'Unidad', name: 'Unidad' },
+    { titulo: 'U.O.Propia', name: 'U.O.Propia' },
+    { titulo: 'Calificación Profesional', name: 'Calificación Profesional' },
+    { titulo: 'O Soc Codigo', name: 'O Soc Codigo' },
+    { titulo: 'O Soc Nombre', name: 'O Soc Nombre' },
+    { titulo: 'Zona', name: 'Zona' },
+    { titulo: 'Laboral Barrio', name: 'Laboral Barrio' },
+    { titulo: 'Laboral CP', name: 'Laboral CP' },
+    { titulo: 'Laboral Calle', name: 'Laboral Calle' },
+    { titulo: 'Laboral Nro', name: 'Laboral Nro' },
+    { titulo: 'Laboral Piso', name: 'Laboral Piso' },
+    { titulo: 'Laboral Dpto', name: 'Laboral Dpto' },
+    { titulo: 'Laboral Localidad', name: 'Laboral Localidad' },
+    { titulo: 'Laboral Provincia', name: 'Laboral Provincia' },
+    { titulo: 'Centro de Costo', name: 'CentroDeCosto' },
+    { titulo: 'Lugar de Pago', name: 'LugarDePago' },
+    { titulo: 'Sector Interno', name: 'SectorInterno' },
+    { titulo: 'Jornada', name: 'Jornada' },
+    { titulo: 'Recibos', name: 'Recibos' },
+    { titulo: 'Legajos', name: 'Legajos' },
+    { titulo: 'Bruto Imp', name: 'Bruto Imp' },
+    { titulo: 'Retenciones Imp', name: 'Retenciones Imp' },
+    { titulo: 'Salario Familiar Imp', name: 'Salario Familiar Imp' },
+    { titulo: 'Exento Imp', name: 'Exento Imp' },
+    { titulo: 'Neto Imp', name: 'Neto Imp' },
+    { titulo: '592 Imp', name: '592 - (con aportes) Imp' },
+    { titulo: '870 Imp', name: '870 - Cuota Sindical (C) Imp' },
+    { titulo: '871 Imp', name: '871 - Aporte Solidario (D) Imp' },
+    { titulo: '872 Imp', name: '872 - Federación Imp' },
+    { titulo: '873 Imp', name: '873 - Ajte.Dto.Obra Social Imp' },
+    { titulo: '874 Imp', name: '874 - Solo Sind. (D) Imp' },
+    { titulo: '875 Imp', name: '875 - Solo Sind. (T) Imp' },
+    { titulo: '880 Imp', name: '880 - Ajuste Sindicato Imp' },
+    { titulo: '900 Imp', name: '900 - Seguro de Vida Imp' },
+    { titulo: '901 Imp', name: '901 - Seguro CCT Imp' },
+    { titulo: '903 Imp', name: '903 - Seguro (C) Imp' },
+    { titulo: '911 Imp', name: '911 - Desc. Ayuda Econ Mutual (No Gananc) Imp' },
+    { titulo: '914 Imp', name: '914 - Concepto a Configurar Imp' },
+    { titulo: '916 Imp', name: '916 - Mutual(C) Imp' },
+    { titulo: '932 Imp', name: '932 - Desc.Tarjeta Magnetica Imp' },
+    { titulo: '933 Imp', name: '933 - Retención Directo - Reint Usuaria Imp' },
+    { titulo: '994 Imp', name: '994 - Descuento Anticipo Imp' },
+    { titulo: '995 Imp', name: '995 - Descuento Anticipo (M) Imp' },
+    { titulo: '1200 Imp', name: '1200 - Contribución Patronal 1(C7) Imp' },
+    { titulo: '1201 Imp', name: '1201 - Contribución Patronal 2 (C8) Imp' },
+    { titulo: '1202 Imp', name: '1202 - Contribución Patronal 3 (C9) Imp' },
+    { titulo: '1203 Imp', name: '1203 - Ajte. Contribuciones Imp' },
+    { titulo: '1204 Imp', name: '1204 - Contrib OS Adicional para 931 Imp' },
+    { titulo: '1205 Imp', name: '1205 - Contribucion Patronal (T)(C7) Imp' },
+    { titulo: '1206 Imp', name: '1206 - Contribucion Patronal UOCRA(C8) Imp' },
+    { titulo: '1207 Imp', name: '1207 - Ajte. Contribucion OS Tiempo Parcial Imp' },
+    { titulo: '1212 Imp', name: '1212 - Contribución Patronal 4(C107) Imp' },
+    { titulo: '1213 Imp', name: '1213 - Contribución Patronal 5 (C108) Imp' },
+    { titulo: '1208 Imp', name: '1208 - Contribucion OS S/ NR Imp' },
+    { titulo: 'TOTAL Imp', name: 'TotalImp' },
+    { titulo: 'Básico', name: 'Básico' },
+    { titulo: 'TOTAL', name: 'TOTAL' },
   ]
+  totalRecibos = 0;
+  totalLegajos = 0;
+  totalBrutos: number = 0;
 
   constructor(private convenioServices: ConvenioService) {
     this.nomina_general = [];
@@ -126,19 +200,28 @@ export class ListLiquidacionComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
+
     this.convenioServices.listarNominaGeneral().subscribe(
       (res: any) => {
         this.nomina_general = (res);
         Object.assign(this.nomina_actual, this.nomina_general);
         console.log(this.nomina_actual);
+
         this.dataSource = new MatTableDataSource(this.nomina_actual);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        // this.totalRecibos = this.nomina_actual.map(({ Recibos }) => (Recibos)).reduce((acc, value) => acc + value, 0);
+        // console.log(this.totalRecibos);
+        // this.totalLegajos = this.nomina_actual.map(({ Legajos }) => (Legajos)).reduce((acc, value) => acc + value, 0);
+        // console.log(this.totalLegajos);
       });
     this.convenioServices.listarConvenio().subscribe(
       (res: any) => {
-        this.lista_convenio = res;
+        this.lista_convenio = (res);
         console.log(this.lista_convenio);
       });
+        
   }
 
   checkConvenio($event: any): boolean {
@@ -151,18 +234,16 @@ export class ListLiquidacionComponent implements OnInit {
   convenioSeleccionado($event: any): void {
     console.log("Elige: " + this.nombre_convenio);
 
-    this.nomina_filtrada = this.nomina_actual.filter(nomina_actual => nomina_actual.convenio === this.nombre_convenio);
+    this.nomina_filtrada = this.nomina_actual.filter(convenio => convenio.Convenio === this.nombre_convenio);
     console.log(this.nomina_filtrada);
 
     this.dataSource = new MatTableDataSource(this.nomina_filtrada);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+
 
     this.nombre_convenio = '';
     this.nomina_filtrada = [];
-  }
-  empresaSeleccionada($event: any): void {
-    console.log("Elige: " + this.nombre_empresa);
-
-    this.lista_empresa = this.lista_empresa
   }
 
   filterData($event: any): void {
@@ -171,4 +252,32 @@ export class ListLiquidacionComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  xlsxExport() {
+    const headings = [['Id', 'Legajo', 'CUIL']];
+    const wb = utils.book_new();
+    const ws: any = utils.json_to_sheet([]);
+    utils.sheet_add_aoa(ws, headings);
+    utils.sheet_add_json(ws, this.nomina_actual, {
+      origin: 'A2',
+      skipHeader: true,
+    });
+    utils.book_append_sheet(wb, ws, 'Sindicatos');
+    writeFile(wb, 'Sindicatos Reportes.xlsx');
+  }
+  /*
+  let dataSource = new MatTableDataSource(this.rows);
+  let data = dataSource.filteredData;
+  const worksheet: WorkSheet = utils.json_to_sheet(data);
+
+  const workbook: XLSX.WorkBook = {
+    Sheets: { data: worksheet },
+    SheetNames: ['data']
+  };
+  XLSX.writeFile(workbook, 'tickets.xls', {
+    bookType: 'xls',
+    type: 'buffer'
+  });
+  this.varGlobal.HideLoading();
+      });
+  */
 }

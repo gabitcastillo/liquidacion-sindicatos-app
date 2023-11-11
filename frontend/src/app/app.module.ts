@@ -13,7 +13,6 @@ import { ListLiquidacionComponent } from './components/list-liquidacion/list-liq
 import { FooterComponent } from './components/footer/footer.component';
 // Servicios
 import { ConvenioService } from './services/convenio.service';
-// import { MatTableExporterModule } from 'mat-table-exporter';
 
 @NgModule({
   declarations: [
@@ -29,7 +28,6 @@ import { ConvenioService } from './services/convenio.service';
     HttpClientModule,
     BrowserAnimationsModule,
     MaterialModule,
-    // MatTableExporterModule
   ],
   providers: [ConvenioService],
   bootstrap: [AppComponent]

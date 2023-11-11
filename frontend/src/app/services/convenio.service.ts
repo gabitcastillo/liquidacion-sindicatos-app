@@ -18,7 +18,15 @@ export class ConvenioService {
   listarNominaGeneral(){
     return this.http.get(`${this.API_URI_AXTON}/list/`);
   }
-  
+  /*
+  listarNominaGeneral(){
+    return new Promise((resolve, reject) => {
+      this.http.get(this.API_URI_AXTON).subscribe((result:any) => {
+        resolve(result);
+      });
+    });
+  }
+  */
   listarConvenio(){
     return this.http.get(`${this.API_URI_AXTON}/listConvenio/`);
   }

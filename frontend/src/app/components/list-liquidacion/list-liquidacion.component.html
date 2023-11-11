@@ -1,7 +1,7 @@
 <br>
 <div class="container">
   <div class="title">
-    <h3>Resumen de Liquidación - Agrupado por Legajo</h3>
+    <h3>Resumen de Liquidación | Agrupado por Legajo</h3>
     <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#demo">Filtros</button>
   </div>
   <br>
@@ -9,28 +9,38 @@
     (Payroll)</a>
   <hr>
   <div class="collapse navbar-collapse flex-grow-0" id="demo">
-    <div class="group">   
-      <div class="convenio-group">
+    <div class="group">
+      <!-- <div class="convenio-group">
         <input type="checkbox" name="convenio" id="convenio" (change)="checkConvenio($event)"> Convenio
         <select class="form-control" [disabled]="!select_convenio" required [(ngModel)]="nombre_convenio"
-          name="nombre_convenio" (change)="convenioSeleccionado($event)">
+          name="nombre_convenio" (change)="convenioSeleccionado($event)" #input>
           <option value="undefined" disabled selected>Seleccione...</option>
           <option *ngFor="let convenio of lista_convenio" [value]="convenio.convenio">{{convenio.convenio}}</option>
         </select>
+      </div> -->
+      <div class="convenio-group">
+        <mat-form-field>
+          <mat-label>Convenio</mat-label>
+          <mat-select [(ngModel)]="nombre_convenio" name="nombre_convenio" (selectionChange)="convenioSeleccionado($event)" [(value)]="nombre_convenio">
+            <mat-option >Seleccione...</mat-option>
+            <mat-option *ngFor="let convenio of lista_convenio" [value]="convenio.convenio">
+              {{convenio.convenio}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
-      <div class="empresa-group">
-        <h6>Empresa</h6>
-        <select class="form-control" [ngModel]="" name="">
-          <option value="undefined" disabled selected>Seleccione...</option>
-          <option *ngFor="let empresa of lista_empresa" [value]="">{{empresa.nombre}}</option>
-        </select>
+      <div class="egreso-group">
+        <mat-form-field>
+          <mat-label>Egreso</mat-label>
+          <mat-select [(ngModel)]="fecha_egreso" name="fecha_egreso" (selectionChange)="convenioSeleccionado($event)" [(value)]="fecha_egreso">
+            <mat-option >Seleccione...</mat-option>
+            <mat-option *ngFor="let egreso of lista_egreso" [value]="egreso.Egreso">
+              {{egreso.Egreso}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
-      <!-- <button mat-raised-button (click)="exporter.exportTable('csv', {fileName:'test',
-   Props: {Author: 'myName'}})">
-   Export
-    </button> -->
     </div>
-    
   </div>
   <br>
 
@@ -38,32 +48,33 @@
     <mat-label>Búsqueda</mat-label>
     <input matInput (keyup)="filterData($event)" placeholder="Ingrese aquí..." #input autocomplete="off">
   </mat-form-field>
-  <h5>Total General</h5>
-  <div class="mat-elevation-z8">
-    <table mat-table [dataSource]="dataSource" *ngIf="nomina_actual.length > 0; else fila">
+  <!-- <h5>Total General</h5> -->
+
+  <div class="mat-elevation-z8" tabindex="0">
+    <table mat-table [dataSource]="dataSource" matSort [hidden]="!nomina_actual.length">
 
       <ng-container matColumnDef="{{column.name}}" *ngFor="let column of columns">
-        <th mat-header-cell *matHeaderCellDef>{{column.titulo}}</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="">{{column.titulo}}</th>
         <td mat-cell *matCellDef="let element">{{element[column.name]}}</td>
+        <td mat-footer-cell *matFooterCellDef>Total</td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
 
       <tr class="mat-row" *matNoDataRow>
-        <td class="mat-cell" colspan="4">No hay datos que coincida con el filtro "{{input.value}}"</td>
+        <td class="mat-cell" colspan="4">No hay datos que coincida con la busqueda {{input.value}}</td>
       </tr>
     </table>
-    <ng-template #fila>
-      <tbody>
-        <tr>
-          <td colspan="4">No hay filas para mostrar</td>
-        </tr>
-      </tbody>
-    </ng-template>
-    
-    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements">
-    </mat-paginator>
   </div>
-
+  <mat-paginator class="mat-paginator" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons
+    aria-label="Select page of periodic elements">
+  </mat-paginator>
+  <br>
+  <h6>Exportar:</h6>
+  <div class="button">
+    <button class="btn btn-success" (click)="xlsxExport()">Excel</button>
+    <button class="btn btn-info ml-2">CSV</button>
+  </div>
 </div>
