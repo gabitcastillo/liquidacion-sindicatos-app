@@ -5,9 +5,6 @@
     <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#demo">Filtros</button>
   </div>
   <br>
-  <a href="https://ktna01.grupo-gestion.com.ar/ktna40/Reportes/Liquidacion/Filtro.aspx" target="_blank">Ir a Procesos
-    (Payroll)</a>
-  <hr>
   <div class="collapse navbar-collapse flex-grow-0" id="demo">
     <div class="group">
       <!-- <div class="convenio-group">
@@ -22,7 +19,7 @@
         <mat-form-field>
           <mat-label>Convenio</mat-label>
           <mat-select [(ngModel)]="nombre_convenio" name="nombre_convenio" (selectionChange)="convenioSeleccionado($event)" [(value)]="nombre_convenio">
-            <mat-option >Seleccione...</mat-option>
+            <mat-option>Seleccione...</mat-option>
             <mat-option *ngFor="let convenio of lista_convenio" [value]="convenio.convenio">
               {{convenio.convenio}}
             </mat-option>
@@ -33,9 +30,53 @@
         <mat-form-field>
           <mat-label>Egreso</mat-label>
           <mat-select [(ngModel)]="fecha_egreso" name="fecha_egreso" (selectionChange)="convenioSeleccionado($event)" [(value)]="fecha_egreso">
-            <mat-option >Seleccione...</mat-option>
+            <mat-option>Seleccione...</mat-option>
             <mat-option *ngFor="let egreso of lista_egreso" [value]="egreso.Egreso">
               {{egreso.Egreso}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="osoccodigo-group">
+        <mat-form-field>
+          <mat-label>O Soc Codigo</mat-label>
+          <mat-select [(ngModel)]="oSocCodigo" name="oSocCodigo" (selectionChange)="convenioSeleccionado($event)" [(value)]="oSocCodigo">
+            <mat-option>Seleccione...</mat-option>
+            <mat-option *ngFor="let codigo of lista_osocodigo" [value]="codigo.O_Soc_Codigo">
+              {{codigo.O_Soc_Codigo}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="categoria-group">
+        <mat-form-field>
+          <mat-label>Categoría</mat-label>
+          <mat-select [(ngModel)]="nombre_categoria" name="nombre_categoria" (selectionChange)="convenioSeleccionado($event)" [(value)]="nombre_categoria">
+            <mat-option >Seleccione...</mat-option>
+            <mat-option *ngFor="let categoria of lista_categoria" [value]="categoria.Categoria">
+              {{categoria.Categoria}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="cliente-group">
+        <mat-form-field>
+          <mat-label>Cliente</mat-label>
+          <mat-select [(ngModel)]="nombre_cliente" name="nombre_cliente" (selectionChange)="convenioSeleccionado($event)" [(value)]="nombre_cliente">
+            <mat-option >Seleccione...</mat-option>
+            <mat-option *ngFor="let cliente of lista_cliente" [value]="cliente.Cliente">
+              {{cliente.Cliente}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="laboral-group">
+        <mat-form-field>
+          <mat-label>Laboral Provincia</mat-label>
+          <mat-select [(ngModel)]="nombre_labprovincia" name="nombre_labprovincia" (selectionChange)="convenioSeleccionado($event)" [(value)]="nombre_labprovincia">
+            <mat-option >Seleccione...</mat-option>
+            <mat-option *ngFor="let laboral of lista_labprovincia" [value]="laboral.LaboralProvincia">
+              {{laboral.LaboralProvincia}}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -48,7 +89,6 @@
     <mat-label>Búsqueda</mat-label>
     <input matInput (keyup)="filterData($event)" placeholder="Ingrese aquí..." #input autocomplete="off">
   </mat-form-field>
-  <!-- <h5>Total General</h5> -->
 
   <div class="mat-elevation-z8" tabindex="0">
     <table mat-table [dataSource]="dataSource" matSort [hidden]="!nomina_actual.length">

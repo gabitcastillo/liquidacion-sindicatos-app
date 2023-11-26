@@ -21,6 +21,10 @@ export class ListLiquidacionComponent implements OnInit {
   nombre_convenio: string = '';
   nombre_empresa: string = '';
   fecha_egreso: string = '';
+  oSocCodigo : string = '';
+  nombre_categoria : string = '';
+  nombre_cliente : string = '';
+  nombre_labprovincia : string = '';
 
   nomina_general: Nomina[];
   nomina_actual: Nomina[];
@@ -28,6 +32,10 @@ export class ListLiquidacionComponent implements OnInit {
 
   lista_convenio: any;
   lista_egreso: any;
+  lista_osocodigo: any;
+  lista_categoria: any;
+  lista_cliente: any;
+  lista_labprovincia : any;
 
   displayedColumns: string[] = [
     'Legajo',
@@ -44,7 +52,7 @@ export class ListLiquidacionComponent implements OnInit {
     'FNacimiento',
     'FecBajaCAT',
     'Convenio',
-    'Categoría',
+    'Categoria',
     'Cliente',
     'Unidad',
     'U.O.Propia',
@@ -125,8 +133,8 @@ export class ListLiquidacionComponent implements OnInit {
     { titulo: 'F. Nacimiento', name: 'FNacimiento' },
     { titulo: 'FecBajaCAT', name: 'FecBajaCAT' },
     { titulo: 'Convenio', name: 'Convenio' },
-    { titulo: 'Categoría', name: 'Categoría' },
-    { titulo: 'Cliente', name: 'Cliente', toolTip: 'Clienteee' },
+    { titulo: 'Categoria', name: 'Categoria' },
+    { titulo: 'Cliente', name: 'Cliente' },
     { titulo: 'Unidad', name: 'Unidad' },
     { titulo: 'U.O.Propia', name: 'U.O.Propia' },
     { titulo: 'Calificación Profesional', name: 'Calificación Profesional' },
@@ -187,7 +195,7 @@ export class ListLiquidacionComponent implements OnInit {
   ]
   totalRecibos = 0;
   totalLegajos = 0;
-  totalBrutos: number = 0;
+
 
   constructor(private convenioServices: ConvenioService) {
     this.nomina_general = [];
@@ -201,12 +209,18 @@ export class ListLiquidacionComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.convenioServices.listarNominaGeneral().subscribe(
       (res: any) => {
         this.nomina_general = (res);
         Object.assign(this.nomina_actual, this.nomina_general);
         console.log(this.nomina_actual);
+      
+        this.getOsocCodigo();
+        this.getEgreso();
+        this.getCategoria();
+        this.getCliente();
+        this.getCategoria();
+        this.getLaboralProvincia();
 
         this.dataSource = new MatTableDataSource(this.nomina_actual);
         this.dataSource.paginator = this.paginator;
@@ -221,7 +235,7 @@ export class ListLiquidacionComponent implements OnInit {
         this.lista_convenio = (res);
         console.log(this.lista_convenio);
       });
-        
+    
   }
 
   checkConvenio($event: any): boolean {
@@ -232,7 +246,7 @@ export class ListLiquidacionComponent implements OnInit {
   }
 
   convenioSeleccionado($event: any): void {
-    console.log("Elige: " + this.nombre_convenio);
+    console.log("Elige: " + this.fecha_egreso);
 
     this.nomina_filtrada = this.nomina_actual.filter(convenio => convenio.Convenio === this.nombre_convenio);
     console.log(this.nomina_filtrada);
@@ -245,6 +259,27 @@ export class ListLiquidacionComponent implements OnInit {
     this.nombre_convenio = '';
     this.nomina_filtrada = [];
   }
+
+  getEgreso(){
+    this.lista_egreso = this.nomina_actual.filter(egreso => egreso.Egreso);
+    // console.log(this.lista_egreso);
+  }
+  getOsocCodigo(){
+    this.lista_osocodigo = this.nomina_actual.filter(osocodigo => osocodigo.O_Soc_Codigo);
+    // console.log(this.lista_osocodigo);
+  }
+  getCategoria() {
+    this.lista_categoria = this.nomina_actual.filter(categoria => categoria.Categoria);
+    // console.log("categoria: " + this.lista_categoria);
+  }
+  getCliente(){
+    this.lista_cliente = this.nomina_actual.filter(cliente => cliente.Cliente);
+  }
+  getLaboralProvincia(){
+    this.lista_labprovincia = this.nomina_actual.filter(laboral => laboral.LaboralProvincia);
+
+  }
+
 
   filterData($event: any): void {
     const filterValue = ($event.target as HTMLInputElement).value;

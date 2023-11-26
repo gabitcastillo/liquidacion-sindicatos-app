@@ -18,6 +18,13 @@ export class ConvenioService {
   listarNominaGeneral(){
     return this.http.get(`${this.API_URI_AXTON}/list/`);
   }
+  
+  listarConvenio(){
+    return this.http.get(`${this.API_URI_AXTON}/listConvenio/`);
+  }
+  listarEgreso(){
+    return this.http.get(`${this.API_URI_AXTON}/listEgreso/`);
+  }
   /*
   listarNominaGeneral(){
     return new Promise((resolve, reject) => {
@@ -27,7 +34,4 @@ export class ConvenioService {
     });
   }
   */
-  listarConvenio(){
-    return this.http.get(`${this.API_URI_AXTON}/listConvenio/`);
-  }
 }

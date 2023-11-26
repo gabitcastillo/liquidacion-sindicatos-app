@@ -22,16 +22,17 @@
 }
 .group {
     display: flex;
-    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 
-.convenio-group {
-    margin-right: 1rem;
+.convenio-group, .egreso-group, .categoria-group, .osoccodigo-group, .cliente-group, .laboral-group {
+    margin-right: 0.5rem;
 }
 
-select {
+/* select {
     width: 10rem;
-}
+} */
 
 mat-form-field {
     font-size: 14px;
@@ -50,7 +51,7 @@ table {
 .mat-sort-header,
 .mat-header-cell {
     flex-direction: column;
-    justify-content: center ;
+    justify-content: center;
     align-items: center;
     text-align: center !important;
     width: 100%;
