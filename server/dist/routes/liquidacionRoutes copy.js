@@ -22,9 +22,13 @@ class LiquidacionRoutes {
         this.router.get('/', (req, res) => {
             res.send('Main!!!');
         });
+        // this.router.get('/list', (req: Request, res: Response) => {
+        //     res.send('Listed In!!')
+        // });
         this.router.get('/list', liquidacionController_1.default.listNominaGeneral);
+        this.router.get('/listConvenio', liquidacionController_1.default.listConvenio);
     }
 }
 const liquidacionRoutes = new LiquidacionRoutes();
 exports.default = liquidacionRoutes.router;
-//# sourceMappingURL=liquidacionRoutes.js.map
+//# sourceMappingURL=liquidacionRoutes%20copy.js.map

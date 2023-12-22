@@ -2,7 +2,9 @@ import express, { Application } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import indexRoutes from './routes/indexRoutes';
+import readExcelRoutes from './routes/readExcelRoutes';
 import liquidacionRoutes from './routes/liquidacionRoutes';
+import jsonRoutes from './routes/jsonRoutes';
 
 class Server {
     public app: Application;
@@ -23,16 +25,19 @@ class Server {
         this.app.use(cors()); //iniciamos cors
         this.app.use(express.json()); //habilitamos el intercambio de objetos json entre aplicaciones
         this.app.use(express.urlencoded({ extended: false }));//habilitamos para recibir datos a traves de formularios html.
+        
     }
     routes(): void {
         this.app.use(indexRoutes);
-        this.app.use("/liquidacion", liquidacionRoutes);
+        this.app.use('/read', readExcelRoutes);
+        this.app.use(jsonRoutes)
+        this.app.use(liquidacionRoutes);
      }
     start(): void {
         this.app.listen(this.app.get('port'), () => {
             console.log("Server escuchando en puerto: " + this.app.get('port'));
-        }
-        );
+        });
+
     }
 }
 const server = new Server();

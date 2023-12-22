@@ -7,7 +7,9 @@ const express_1 = __importDefault(require("express"));
 const morgan_1 = __importDefault(require("morgan"));
 const cors_1 = __importDefault(require("cors"));
 const indexRoutes_1 = __importDefault(require("./routes/indexRoutes"));
+const readExcelRoutes_1 = __importDefault(require("./routes/readExcelRoutes"));
 const liquidacionRoutes_1 = __importDefault(require("./routes/liquidacionRoutes"));
+const jsonRoutes_1 = __importDefault(require("./routes/jsonRoutes"));
 class Server {
     constructor() {
         this.app = (0, express_1.default)();
@@ -26,7 +28,9 @@ class Server {
     }
     routes() {
         this.app.use(indexRoutes_1.default);
-        this.app.use("/liquidacion", liquidacionRoutes_1.default);
+        this.app.use('/read', readExcelRoutes_1.default);
+        this.app.use(jsonRoutes_1.default);
+        this.app.use(liquidacionRoutes_1.default);
     }
     start() {
         this.app.listen(this.app.get('port'), () => {

@@ -1,30 +1,19 @@
 <br>
 <div class="container">
   <div class="title">
-    <h3>Resumen de Liquidación | Agrupado por Legajo</h3>
-    <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#demo">Filtros</button>
+    <h3>Seleccione los filtros deseados</h3>
+    <button type="button" class="btn btn-info" data-toggle="collapse" aria-expanded="true" data-target="#demo" (click)="btnFiltros($event)">{{btnFiltro}}</button>
   </div>
   <br>
-  <a href="https://ktna01.grupo-gestion.com.ar/ktna40/Reportes/Liquidacion/Filtro.aspx" target="_blank">Ir a Procesos
-    (Payroll)</a>
-  <hr>
-  <div class="collapse navbar-collapse flex-grow-0" id="demo">
+  <div class="collapse navbar-collapse show flex-grow-0" id="demo">
     <div class="group">
-      <!-- <div class="convenio-group">
-        <input type="checkbox" name="convenio" id="convenio" (change)="checkConvenio($event)"> Convenio
-        <select class="form-control" [disabled]="!select_convenio" required [(ngModel)]="nombre_convenio"
-          name="nombre_convenio" (change)="convenioSeleccionado($event)" #input>
-          <option value="undefined" disabled selected>Seleccione...</option>
-          <option *ngFor="let convenio of lista_convenio" [value]="convenio.convenio">{{convenio.convenio}}</option>
-        </select>
-      </div> -->
       <div class="convenio-group">
         <mat-form-field>
           <mat-label>Convenio</mat-label>
-          <mat-select [(ngModel)]="nombre_convenio" name="nombre_convenio" (selectionChange)="convenioSeleccionado($event)" [(value)]="nombre_convenio">
-            <mat-option >Seleccione...</mat-option>
-            <mat-option *ngFor="let convenio of lista_convenio" [value]="convenio.convenio">
-              {{convenio.convenio}}
+          <mat-select [(ngModel)]="selectConvenio" name="selectConvenio" [(value)]="selectConvenio">
+            <mat-option>Seleccione...</mat-option>
+            <mat-option *ngFor="let item of listConvenio" value="{{item.Convenio}}" >
+              {{item.Convenio}}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -32,10 +21,82 @@
       <div class="egreso-group">
         <mat-form-field>
           <mat-label>Egreso</mat-label>
-          <mat-select [(ngModel)]="fecha_egreso" name="fecha_egreso" (selectionChange)="convenioSeleccionado($event)" [(value)]="fecha_egreso">
+          <input type="date" name="selectEgreso" id="" [(ngModel)]="selectEgreso" matNativeControl>
+        </mat-form-field>
+      </div>
+      <div class="osoccodigo-group">
+        <mat-form-field>
+          <mat-label>O Soc Codigo</mat-label>
+          <mat-select [(ngModel)]="selectOSocCodigo" name="selectOcodigo" [(value)]="selectOSocCodigo">
+            <mat-option>Seleccione...</mat-option>
+            <mat-option *ngFor="let item of listConvenio" value="{{item.OSocCodigo}}">
+              {{item.OSocCodigo}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="categoria-group">
+        <mat-form-field>
+          <mat-label>Categoría</mat-label>
+          <mat-select [(ngModel)]="selectCategoria" name="selectCategoria" [(value)]="selectCategoria">
             <mat-option >Seleccione...</mat-option>
-            <mat-option *ngFor="let egreso of lista_egreso" [value]="egreso.Egreso">
-              {{egreso.Egreso}}
+            <mat-option *ngFor="let item of listConvenio" value="{{item.Categoria}}">
+              {{item.Categoria}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="cliente-group">
+        <mat-form-field>
+          <mat-label>Cliente</mat-label>
+          <mat-select [(ngModel)]="selectCliente"  name="selectCliente"  [(value)]="selectCliente">
+            <mat-option >Seleccione...</mat-option>
+            <mat-option *ngFor="let item of listConvenio" value="{{item.Cliente}}">
+              {{item.Cliente}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="laboral-group">
+        <mat-form-field>
+          <mat-label>Laboral Provincia</mat-label>
+          <mat-select [(ngModel)]="selectProvincia" name="selectProvincia" [(value)]="selectProvincia">
+            <mat-option >Seleccione...</mat-option>
+            <mat-option *ngFor="let item of listConvenio" value="{{item.LaboralProvincia}}" >
+              {{item.LaboralProvincia}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="zona-group">
+        <mat-form-field>
+          <mat-label>Zona</mat-label>
+          <mat-select [(ngModel)]="selectZona" name="selectZona" [(value)]="selectZona">
+            <mat-option >Seleccione...</mat-option>
+            <mat-option  *ngFor="let item of listConvenio" value="{{item.Zona}}">
+              {{item.Zona}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="lalocalidad-group">
+        <mat-form-field>
+          <mat-label>Laboral Localidad</mat-label>
+          <mat-select [(ngModel)]="selectLocalidad" name="selectZona" [(value)]="selectLocalidad">
+            <mat-option >Seleccione...</mat-option>
+            <mat-option  *ngFor="let item of listConvenio" value="{{item.LaboralLocalidad}}">
+              {{item.LaboralLocalidad}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="rama-group">
+        <mat-form-field>
+          <mat-label>Rama</mat-label>
+          <mat-select name="">
+            <mat-option >Seleccione...</mat-option>
+            <mat-option  [value]="">
+              
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -48,7 +109,6 @@
     <mat-label>Búsqueda</mat-label>
     <input matInput (keyup)="filterData($event)" placeholder="Ingrese aquí..." #input autocomplete="off">
   </mat-form-field>
-  <!-- <h5>Total General</h5> -->
 
   <div class="mat-elevation-z8" tabindex="0">
     <table mat-table [dataSource]="dataSource" matSort [hidden]="!nomina_actual.length">
@@ -56,12 +116,10 @@
       <ng-container matColumnDef="{{column.name}}" *ngFor="let column of columns">
         <th mat-header-cell *matHeaderCellDef mat-sort-header="">{{column.titulo}}</th>
         <td mat-cell *matCellDef="let element">{{element[column.name]}}</td>
-        <td mat-footer-cell *matFooterCellDef>Total</td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
 
       <tr class="mat-row" *matNoDataRow>
         <td class="mat-cell" colspan="4">No hay datos que coincida con la busqueda {{input.value}}</td>
@@ -72,9 +130,11 @@
     aria-label="Select page of periodic elements">
   </mat-paginator>
   <br>
-  <h6>Exportar:</h6>
-  <div class="button">
-    <button class="btn btn-success" (click)="xlsxExport()">Excel</button>
-    <button class="btn btn-info ml-2">CSV</button>
+  <div class="example-button-row">
+    <button class="btn btn-primary" mat-raised-button color="primary" (click)="btnAceptar()">Aceptar</button>
+    <button mat-raised-button color="warn" (click)="btnDeshacer()">Deshacer</button>
+  </div>
+  <div class="message" [hidden]="!mostrarMensaje">
+    <p>{{mensajeOk}}</p>
   </div>
 </div>

@@ -22,20 +22,44 @@
 }
 .group {
     display: flex;
-    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 
-.convenio-group {
-    margin-right: 1rem;
+.convenio-group, .egreso-group, .categoria-group, .osoccodigo-group, .cliente-group, .laboral-group,
+.concepto-group, .zona-group, .lalocalidad-group, .rama-group {
+    margin-right: 0.5rem;
 }
 
-select {
-    width: 10rem;
+button {
+    background: #0e0b22;
+    color: #fff;
+    padding: 0.6rem;
+    border: none;
+    border-radius: 4px;
+}
+
+button:hover {
+    cursor: pointer;
+    background: #1e1d25;
+}
+
+/* .button-group {
+    display: flex;
+    justify-content: center;
+} */
+.btn.btn-primary {
+    margin-right: 0.5rem;
 }
 
 mat-form-field {
     font-size: 14px;
     width: 100%;
+}
+
+.example-button-row {
+    display: flex;
+    justify-content: center;
 }
 
 table {
@@ -50,7 +74,7 @@ table {
 .mat-sort-header,
 .mat-header-cell {
     flex-direction: column;
-    justify-content: center ;
+    justify-content: center;
     align-items: center;
     text-align: center !important;
     width: 100%;
@@ -75,4 +99,10 @@ table {
     justify-content: center;
     background-color: #99A0BA;
     color: #000;
+}
+
+.message {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
 }

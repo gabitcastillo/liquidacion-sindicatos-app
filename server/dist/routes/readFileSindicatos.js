@@ -8,8 +8,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
     Response permitira que el servidor devuelva una respuesta.
     */
 const express_1 = require("express");
-const liquidacionController_1 = __importDefault(require("../controllers/liquidacionController"));
-class LiquidacionRoutes {
+const readFileController_1 = __importDefault(require("../controllers/readFileController"));
+class ReadFilesRoutes {
     /*El constructor llama a config para que este al tanto de las rutas existentes y que hacer con ellas.*/
     constructor() {
         //Instanciamos el enrutador.
@@ -22,9 +22,9 @@ class LiquidacionRoutes {
         this.router.get('/', (req, res) => {
             res.send('Main!!!');
         });
-        this.router.get('/list', liquidacionController_1.default.listNominaGeneral);
+        this.router.get('/readExcel', readFileController_1.default.readExcelController);
     }
 }
-const liquidacionRoutes = new LiquidacionRoutes();
-exports.default = liquidacionRoutes.router;
-//# sourceMappingURL=liquidacionRoutes.js.map
+const readFilesRoutes = new ReadFilesRoutes();
+exports.default = readFilesRoutes.router;
+//# sourceMappingURL=readFileSindicatos.js.map

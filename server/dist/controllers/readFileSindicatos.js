@@ -17,8 +17,18 @@ class LiquidacionController {
     listNominaGeneral(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log(req.body);
-            const objeto = req.body;
-            const nomina = yield liquidacionModel_1.default.listarNominaGeneral(objeto);
+            //res.send('Listado de liquidacion!!!');
+            const nomina = yield liquidacionModel_1.default.listarNominaGeneral();
+            //console.log(nomina);
+            return res.json(nomina);
+        });
+    }
+    listConvenio(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body);
+            //res.send('Listado de liquidacion!!!');
+            const nomina = yield liquidacionModel_1.default.listarConvenio();
+            //console.log(nomina);
             return res.json(nomina);
         });
     }
@@ -36,4 +46,4 @@ class LiquidacionController {
 }
 const liquidacionController = new LiquidacionController();
 exports.default = liquidacionController;
-//# sourceMappingURL=liquidacionController.js.map
+//# sourceMappingURL=readFileSindicatos.js.map

@@ -19,11 +19,7 @@ class LiquidacionRoutes {
         this.router.get('/', (req: Request, res: Response) => {
             res.send('Main!!!');
         });
-        // this.router.get('/list', (req: Request, res: Response) => {
-        //     res.send('Listed In!!')
-        // });
         this.router.get('/list', liquidacionController.listNominaGeneral);
-        this.router.get('/listConvenio', liquidacionController.listConvenio);
     }
 }
 

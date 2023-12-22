@@ -7,21 +7,12 @@ class LiquidacionController{
 
 	public async listNominaGeneral(req:Request,res:Response){
 		console.log(req.body);
-        //res.send('Listado de liquidacion!!!');
-        const nomina:Nomina[] = await liquidacionModel.listarNominaGeneral();
-        //console.log(nomina);
+        const objeto : Nomina = req.body;
+        const nomina: Nomina[] = await liquidacionModel.listarNominaGeneral(objeto);
         return res.json(nomina);
          
 	}
 
-    public async listConvenio(req:Request,res:Response){
-		console.log(req.body);
-        //res.send('Listado de liquidacion!!!');
-        const nomina:Nomina[] = await liquidacionModel.listarConvenio();
-        //console.log(nomina);
-        return res.json(nomina);
-         
-	}
     
 	public async findCovenio(req:Request,res:Response){
 		console.log(req.params.id); //params lleva los datos que se pasan por URL o URI

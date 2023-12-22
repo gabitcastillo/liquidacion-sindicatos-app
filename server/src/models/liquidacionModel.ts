@@ -1,4 +1,5 @@
 import { createPool } from 'mysql2/promise';
+import { Nomina } from './nominaModel';
 
 class LiquidacionModel {
 	private db: any; //Manejador de la bd
@@ -16,7 +17,7 @@ class LiquidacionModel {
 		});
 	}
 	/* Nota: Aqui cada uno tiene que setear los parametros de su propio servidor MySQL / MariaDB.*/
-    async listarNominaGeneral() {//Devuelve todas las filas de la tabla usuario
+    async listarNominaGeneral(objeto : Nomina) {//Devuelve todas las filas de la tabla usuario
 		//const db=this.connection;
 		const liquidacion = await this.db.query('SELECT * FROM liquidaciones_20231103');
 		console.log(liquidacion[0]);
@@ -32,15 +33,7 @@ class LiquidacionModel {
 			return encontrado[0][0];
 		return null;
 	}
-	//Devuelve un objeto cuya fila en la tabla usuarios coincide con nombre.
-	//Si no la encuentra devuelve null
-	async listarConvenio() {
-		const liquidacion = await this.db.query('SELECT DISTINCT(convenio) FROM liquidaciones_20231103 ORDER BY convenio ASC');
-		//Ojo la consulta devuelve una tabla de una fila. (Array de array) Hay que desempaquetar y obtener la unica fila al enviar
-		console.log(liquidacion[0]);
 
-		return liquidacion[0];
-	}
 }
 
 const liquidacionModel: LiquidacionModel = new LiquidacionModel();

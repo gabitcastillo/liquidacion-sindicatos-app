@@ -26,7 +26,7 @@ class LiquidacionModel {
         });
     }
     /* Nota: Aqui cada uno tiene que setear los parametros de su propio servidor MySQL / MariaDB.*/
-    listarNominaGeneral() {
+    listarNominaGeneral(objeto) {
         return __awaiter(this, void 0, void 0, function* () {
             //const db=this.connection;
             const liquidacion = yield this.db.query('SELECT * FROM liquidaciones_20231103');
@@ -44,16 +44,6 @@ class LiquidacionModel {
             if (encontrado.length > 1)
                 return encontrado[0][0];
             return null;
-        });
-    }
-    //Devuelve un objeto cuya fila en la tabla usuarios coincide con nombre.
-    //Si no la encuentra devuelve null
-    listarConvenio() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const liquidacion = yield this.db.query('SELECT DISTINCT(convenio) FROM liquidaciones_20231103 ORDER BY convenio ASC');
-            //Ojo la consulta devuelve una tabla de una fila. (Array de array) Hay que desempaquetar y obtener la unica fila al enviar
-            console.log(liquidacion[0]);
-            return liquidacion[0];
         });
     }
 }

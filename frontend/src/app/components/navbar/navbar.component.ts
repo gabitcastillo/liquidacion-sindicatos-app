@@ -8,7 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class NavbarComponent implements OnInit {
 
   
-  titulo : string = 'Liquidación de Sindicatos';
+  titulo : string = 'LIQUIDADOR DE SINDICATOS';
   
   constructor() {
    }

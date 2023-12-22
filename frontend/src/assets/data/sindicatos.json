@@ -1,0 +1,22 @@
+{
+    "Sindicatos": [
+        {
+            "ID":"1",
+            "Nombre":"Agrarios",
+            "O Soc Codigo":"123",
+            "Categoria":"pEON",
+            "Egreso":"12/12/2023",
+            "Cliente":"Agrarios SA",
+            "Laboral":"Caba"
+        },
+        {
+            "ID":"2",
+            "Nombre":"Aguas y Gaseosas",
+            "O Soc Codigo":"123",
+            "Categoria":"pEON",
+            "Egreso":"12/12/2023",
+            "Cliente":"Agrarios SA",
+            "Laboral":"Caba"
+        }
+    ]
+}

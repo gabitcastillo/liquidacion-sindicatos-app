@@ -12,28 +12,28 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const liquidacionModel_1 = __importDefault(require("../models/liquidacionModel"));
-class LiquidacionController {
-    listNominaGeneral(req, res) {
+const fs_1 = __importDefault(require("fs"));
+const path_1 = __importDefault(require("path"));
+class JsonController {
+    addJson(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log(req.body);
-            const objeto = req.body;
-            const nomina = yield liquidacionModel_1.default.listarNominaGeneral(objeto);
-            return res.json(nomina);
-        });
-    }
-    findCovenio(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            console.log(req.params.id); //params lleva los datos que se pasan por URL o URI
-            //res.send('Convenio '+ req.params.id +' encontrado!!!');
-            const { id } = req.params;
-            const nomina = yield liquidacionModel_1.default.buscarIdLiquidacion(id);
-            if (nomina)
-                return res.json(nomina);
-            res.status(404).json({ text: "Nomina doesn't exists" });
+            const data = req.body;
+            try {
+                const archivoPath = path_1.default.join(__dirname, '../../src/assets/data.json');
+                console.log(archivoPath);
+                if (!fs_1.default.existsSync(archivoPath)) {
+                    return res.status(404).send({ text: 'El archivo no existe o la ruta es incorrecta' });
+                }
+                yield fs_1.default.writeFileSync(archivoPath, JSON.stringify(data));
+                return res.status(200).send({ message: 'OK' });
+            }
+            catch (error) {
+                res.status(500).send({ text: '500: El servidor no pudo procesar la solicitud' });
+            }
         });
     }
 }
-const liquidacionController = new LiquidacionController();
-exports.default = liquidacionController;
-//# sourceMappingURL=liquidacionController.js.map
+const jsonController = new JsonController();
+exports.default = jsonController;
+//# sourceMappingURL=jsonController.js.map
