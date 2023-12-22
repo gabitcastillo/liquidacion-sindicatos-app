@@ -26,6 +26,7 @@
     justify-content: space-between;
 }
 
+<<<<<<< HEAD
 .convenio-group, .egreso-group, .categoria-group, .osoccodigo-group, .cliente-group, .laboral-group,
 .concepto-group, .zona-group, .lalocalidad-group, .rama-group {
     margin-right: 0.5rem;
@@ -51,6 +52,15 @@ button:hover {
 .btn.btn-primary {
     margin-right: 0.5rem;
 }
+=======
+.convenio-group, .egreso-group, .categoria-group, .osoccodigo-group, .cliente-group, .laboral-group {
+    margin-right: 0.5rem;
+}
+
+/* select {
+    width: 10rem;
+} */
+>>>>>>> 690fbe4e9b2cd9180490c8ad6c2e72164eae8afd
 
 mat-form-field {
     font-size: 14px;

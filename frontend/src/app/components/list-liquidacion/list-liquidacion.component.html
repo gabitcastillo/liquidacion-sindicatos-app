@@ -5,15 +5,26 @@
     <button type="button" class="btn btn-info" data-toggle="collapse" aria-expanded="true" data-target="#demo" (click)="btnFiltros($event)">{{btnFiltro}}</button>
   </div>
   <br>
+<<<<<<< HEAD
   <div class="collapse navbar-collapse show flex-grow-0" id="demo">
+=======
+  <div class="collapse navbar-collapse flex-grow-0" id="demo">
+>>>>>>> 690fbe4e9b2cd9180490c8ad6c2e72164eae8afd
     <div class="group">
       <div class="convenio-group">
         <mat-form-field>
           <mat-label>Convenio</mat-label>
+<<<<<<< HEAD
           <mat-select [(ngModel)]="selectConvenio" name="selectConvenio" [(value)]="selectConvenio">
             <mat-option>Seleccione...</mat-option>
             <mat-option *ngFor="let item of listConvenio" value="{{item.Convenio}}" >
               {{item.Convenio}}
+=======
+          <mat-select [(ngModel)]="nombre_convenio" name="nombre_convenio" (selectionChange)="convenioSeleccionado($event)" [(value)]="nombre_convenio">
+            <mat-option>Seleccione...</mat-option>
+            <mat-option *ngFor="let convenio of lista_convenio" [value]="convenio.convenio">
+              {{convenio.convenio}}
+>>>>>>> 690fbe4e9b2cd9180490c8ad6c2e72164eae8afd
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -21,6 +32,7 @@
       <div class="egreso-group">
         <mat-form-field>
           <mat-label>Egreso</mat-label>
+<<<<<<< HEAD
           <input type="date" name="selectEgreso" id="" [(ngModel)]="selectEgreso" matNativeControl>
         </mat-form-field>
       </div>
@@ -97,6 +109,56 @@
             <mat-option >Seleccione...</mat-option>
             <mat-option  [value]="">
               
+=======
+          <mat-select [(ngModel)]="fecha_egreso" name="fecha_egreso" (selectionChange)="convenioSeleccionado($event)" [(value)]="fecha_egreso">
+            <mat-option>Seleccione...</mat-option>
+            <mat-option *ngFor="let egreso of lista_egreso" [value]="egreso.Egreso">
+              {{egreso.Egreso}}
+>>>>>>> 690fbe4e9b2cd9180490c8ad6c2e72164eae8afd
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="osoccodigo-group">
+        <mat-form-field>
+          <mat-label>O Soc Codigo</mat-label>
+          <mat-select [(ngModel)]="oSocCodigo" name="oSocCodigo" (selectionChange)="convenioSeleccionado($event)" [(value)]="oSocCodigo">
+            <mat-option>Seleccione...</mat-option>
+            <mat-option *ngFor="let codigo of lista_osocodigo" [value]="codigo.O_Soc_Codigo">
+              {{codigo.O_Soc_Codigo}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="categoria-group">
+        <mat-form-field>
+          <mat-label>Categoría</mat-label>
+          <mat-select [(ngModel)]="nombre_categoria" name="nombre_categoria" (selectionChange)="convenioSeleccionado($event)" [(value)]="nombre_categoria">
+            <mat-option >Seleccione...</mat-option>
+            <mat-option *ngFor="let categoria of lista_categoria" [value]="categoria.Categoria">
+              {{categoria.Categoria}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="cliente-group">
+        <mat-form-field>
+          <mat-label>Cliente</mat-label>
+          <mat-select [(ngModel)]="nombre_cliente" name="nombre_cliente" (selectionChange)="convenioSeleccionado($event)" [(value)]="nombre_cliente">
+            <mat-option >Seleccione...</mat-option>
+            <mat-option *ngFor="let cliente of lista_cliente" [value]="cliente.Cliente">
+              {{cliente.Cliente}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="laboral-group">
+        <mat-form-field>
+          <mat-label>Laboral Provincia</mat-label>
+          <mat-select [(ngModel)]="nombre_labprovincia" name="nombre_labprovincia" (selectionChange)="convenioSeleccionado($event)" [(value)]="nombre_labprovincia">
+            <mat-option >Seleccione...</mat-option>
+            <mat-option *ngFor="let laboral of lista_labprovincia" [value]="laboral.LaboralProvincia">
+              {{laboral.LaboralProvincia}}
             </mat-option>
           </mat-select>
         </mat-form-field>

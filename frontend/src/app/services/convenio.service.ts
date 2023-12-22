@@ -13,6 +13,7 @@ export class ConvenioService {
   constructor(private http: HttpClient) {
     this.convenio = [];
   }
+<<<<<<< HEAD
 
   findConvenio(data: any) {
     return this.http.get(`${this.API_URI_AXTON}/list`, data);
@@ -47,6 +48,15 @@ export class ConvenioService {
   //   }
   // }
 }
+=======
+  
+  listarConvenio(){
+    return this.http.get(`${this.API_URI_AXTON}/listConvenio/`);
+  }
+  listarEgreso(){
+    return this.http.get(`${this.API_URI_AXTON}/listEgreso/`);
+  }
+>>>>>>> 690fbe4e9b2cd9180490c8ad6c2e72164eae8afd
   /*
 
   listarNominaGeneral(){
@@ -57,4 +67,8 @@ export class ConvenioService {
     });
   }
   */
+<<<<<<< HEAD
 
+=======
+}
+>>>>>>> 690fbe4e9b2cd9180490c8ad6c2e72164eae8afd
